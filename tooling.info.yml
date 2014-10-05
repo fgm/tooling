@@ -1,0 +1,5 @@
+type: module
+name: Tooling
+description: "Site analysis tooling"
+package: 'OSInet'
+core: 8.x
