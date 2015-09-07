@@ -1,0 +1,5 @@
+services:
+  tooling_initializer:
+    class: \Drupal\tooling\Initializer
+    tags:
+      - { name: 'event_subscriber' }
