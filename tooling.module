@@ -1,0 +1,48 @@
+<?php
+
+/**
+ * @file
+ * Contains site tooling.
+ *
+ * @author: Frédéric G. MARAND <fgm@osinet.fr>
+ *
+ * @copyright (c) 2015 Ouest Systèmes Informatiques (OSInet).
+ *
+ * @license General Public License version 2 or later
+ */
+
+use Drupal\Core\Access\AccessResult;
+
+/**
+ * Implements hook_entity_field_access().
+ *
+ * FGM Note: beware of cacheability information. Compare this call just after
+ *   a "drush cr" and after the next refresh.
+ */
+function tooling_entity_field_access(
+  $operation,
+  \Drupal\Core\Field\FieldDefinitionInterface $field_definition,
+  \Drupal\Core\Session\AccountInterface $account,
+  \Drupal\Core\Field\FieldItemListInterface $items = NULL
+) {
+  $info = [
+      'operation' => $operation,
+      'field' => $field_definition->getName(),
+      'entity type' => $field_definition->getTargetEntityTypeId(),
+    ];
+
+  if (empty($items)) {
+    $info['carrier'] = t('Empty');
+  }
+  else {
+    $parent = $items->getParent();
+    if ($parent) {
+      $parent = $parent->getValue();
+      $info['carrier'] = $parent->id();
+    }
+  }
+
+  dsm(json_encode($info));
+  return AccessResult::neutral();
+}
+
